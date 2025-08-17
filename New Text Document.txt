@@ -1,0 +1,181 @@
+ترتیب پیشنهادی توسعه LMS
+1. پایه و زیرساخت (Backend + Frontend Setup)
+
+ ساخت Solution در .NET (لایه‌بندی: API، Core، Infrastructure)
+
+ تنظیم EF Core + Migration اول (User, Role)
+
+ راه‌اندازی React (Vite + TS + Tailwind)
+
+ تنظیم Auth (JWT, Refresh Token)
+
+2. صفحات عمومی (Public Pages)
+
+ صفحه Home
+
+ لیست دوره‌ها (Course Catalog)
+
+ جزئیات دوره (Course Details)
+
+ ثبت‌نام و ورود (Login/Register)
+
+3. بخش دانشجو (Student Panel)
+
+ داشبورد دانشجو (لیست دوره‌های ثبت‌نام‌شده)
+
+ صفحه دوره (Lecture List + ویدیو + تمرین‌ها)
+
+ کوییزها و تکالیف (Quiz/Assignment Submit)
+
+ پروفایل دانشجو (ویرایش اطلاعات شخصی)
+
+4. بخش مدرس (Instructor Panel)
+
+ داشبورد مدرس (لیست دوره‌های ساخته‌شده)
+
+ ایجاد دوره (Course Create Wizard)
+
+ مدیریت محتوا (Lecture Upload, Quiz Create)
+
+ مدیریت دانشجوها (لیست ثبت‌نامی‌ها)
+
+5. بخش مدیریت (Admin Panel)
+
+ مدیریت کاربران (CRUD User/Role)
+
+ مدیریت دوره‌ها (Approve/Reject)
+
+ مدیریت مالی (پرداخت‌ها و گزارش‌ها)
+
+ گزارش‌گیری و آنالیتیکس (Charts, Statistics)
+
+
+
+
+
+-----------------------------------------------------------
+
+
+1. موجودیت‌های اصلی (Core)
+
+User
+
+Id (PK)
+
+FirstName, LastName, Email, PasswordHash, ProfileImage
+
+RoleId (FK → Role.Id)
+
+CreatedAt, UpdatedAt
+
+Role
+
+Id (PK)
+
+Name (Admin, Instructor, Student)
+
+Course
+
+Id (PK)
+
+Title, Description, Thumbnail, Level, Price
+
+InstructorId (FK → User.Id)
+
+IsApproved (Admin validation)
+
+CreatedAt, UpdatedAt
+
+2. ثبت‌نام‌ها (Enrollments)
+
+Enrollment
+
+Id (PK)
+
+UserId (FK → User.Id)
+
+CourseId (FK → Course.Id)
+
+EnrolledAt
+
+Progress (٪ پیشرفت دانشجو)
+
+📌 این جدول رابطه Many-to-Many بین User و Course رو پیاده می‌کنه.
+
+3. محتوا (Content)
+
+Lecture
+
+Id (PK)
+
+CourseId (FK → Course.Id)
+
+Title, VideoUrl, ContentText, Order
+
+CreatedAt
+
+Assignment
+
+Id (PK)
+
+CourseId (FK → Course.Id)
+
+Title, Description, Deadline
+
+Quiz
+
+Id (PK)
+
+CourseId (FK → Course.Id)
+
+Title, Description, TimeLimit
+
+QuizQuestion
+
+Id (PK)
+
+QuizId (FK → Quiz.Id)
+
+QuestionText, OptionA, OptionB, OptionC, OptionD, CorrectAnswer
+
+4. پاسخ‌ها (Submissions)
+
+AssignmentSubmission
+
+Id (PK)
+
+AssignmentId (FK → Assignment.Id)
+
+StudentId (FK → User.Id)
+
+FileUrl / TextAnswer
+
+Grade
+
+SubmittedAt
+
+QuizSubmission
+
+Id (PK)
+
+QuizId (FK → Quiz.Id)
+
+StudentId (FK → User.Id)
+
+Score
+
+SubmittedAt
+
+5. پرداخت و مالی (Finance)
+
+Payment
+
+Id (PK)
+
+UserId (FK → User.Id)
+
+CourseId (FK → Course.Id)
+
+Amount, Status (Paid, Pending, Failed)
+
+TransactionDate
