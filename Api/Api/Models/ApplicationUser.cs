@@ -4,6 +4,8 @@ namespace Api.Models;
 
 public class ApplicationUser : IdentityUser
 {
+
+    public string Name { get; set; }
     // Navigation Properties
     public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
     public ICollection<Course> CoursesTaught { get; set; } = new List<Course>();
