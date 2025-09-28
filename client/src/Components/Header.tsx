@@ -1,5 +1,5 @@
 import { IoSearchSharp } from "react-icons/io5";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Header() {
   const HeaderItems: string[] = ["Courses", "Blog", "Music"];
@@ -31,9 +31,16 @@ export default function Header() {
             className="outline-none bg-transparent text-sm"
           />
         </div>
-        <button className="cursor-pointer bg-black text-white rounded-md py-2 px-6 font-semibold hover:bg-gray-800 transition-colors">
-          Sign In
-        </button>
+        <Link to={'/register'}>
+          <button className="cursor-pointer bg-gray-800 text-white rounded-md py-2 px-6 font-semibold hover:bg-gray-800 transition-colors">
+            Register
+          </button>
+        </Link>
+        <Link to={"/login"}>
+          <button className="cursor-pointer bg-blue-800 text-white rounded-md mx-3 py-2 px-6 font-semibold hover:bg-blue-900 transition-colors">
+            Log In
+          </button>
+        </Link>
       </div>
     </header>
   );
