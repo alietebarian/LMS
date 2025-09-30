@@ -83,6 +83,12 @@ export default function Login() {
       <form className="space-y-6" onSubmit={handleSubmit}>
         <h1 className="text-2xl font-bold text-center">ورود</h1>
 
+        {message && (
+          <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded">
+            {message}
+          </div>
+        )}
+
         <input
           type="text"
           placeholder="نام کاربری"

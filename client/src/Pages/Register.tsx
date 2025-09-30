@@ -2,10 +2,18 @@ import { useState } from 'react';
 import { SD_Role } from '../Utility/SD';
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+
+interface userInputInterface{
+  name: string
+  userName: string
+  password: string
+  role: string
+}
 
 export default function Register() {
 
-    const [userInput, setUserInput] = useState({
+    const [userInput, setUserInput] = useState<userInputInterface>({
       name: "",
       userName: "",
       password: "",
@@ -13,6 +21,7 @@ export default function Register() {
     });
 
     const [message, setMessage] = useState<string | null>(null);
+    const navigate = useNavigate()
 
     const registerMutation = useMutation({
       mutationFn: async () => {
@@ -30,6 +39,7 @@ export default function Register() {
       onSuccess: (data: any) => {
         setMessage("ثبت‌نام با موفقیت انجام شد");
         localStorage.setItem('userRole', data.role)
+        navigate('/')
       },
       onError: (error: any) => {
         const errMsg = error?.response?.data;

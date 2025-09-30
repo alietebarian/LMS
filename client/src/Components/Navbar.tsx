@@ -4,6 +4,9 @@ import { IoMdBook } from "react-icons/io";
 import { PiStudentDuotone } from "react-icons/pi";
 import { RiShutDownLine } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
+import { BsBasket } from "react-icons/bs";
+import { MdOutlineAssignment, MdOutlineQuiz } from "react-icons/md";
+
 
 interface menuItemInterface {
   id: number;
@@ -12,17 +15,61 @@ interface menuItemInterface {
   path: string
 }
 
+interface userInterface {
+  fullName: string;
+  id: string;
+  email: string;
+  role: string;
+}
+
 export default function Navbar() {
-  const navMenu: menuItemInterface[] = [
-    { id: 1, icon: <GoHome />, title: "Home", path: '/' },
-    { id: 2, icon: <PiStudentDuotone />, title: "Courses", path: '/courses' },
-    { id: 3, icon: <IoMdBook />, title: "Lessons", path: '/lessons' },
-  ];
+
+  let navMenu: menuItemInterface | object = []
+
+  const userRole = localStorage.getItem('user')
+   let parseToken: userInterface | null = null;
+
+   if (userRole) {
+     parseToken = JSON.parse(userRole) as userInterface;
+   }
+
+   if(parseToken?.role == 'Admin'){
+    navMenu = [
+      { id: 1, icon: <GoHome />, title: "Home", path: "/" },
+      { id: 2, icon: <IoMdBook />, title: "Courses", path: "/courses" },
+      { id: 3, icon: <PiStudentDuotone />, title: "Users", path: "/users" },
+      { id: 4, icon: <BsBasket />, title: "Enrolment", path: "/enrolment" },
+    ];
+   }
+   else if(parseToken?.role == 'Instructor'){
+    navMenu = [
+      { id: 1, icon: <GoHome />, title: "Home", path: "/" },
+      { id: 2, icon: <IoMdBook />, title: "Courses", path: "/courses" },
+      { id: 3, icon: <MdOutlineQuiz />, title: "Quiz", path: "/quiz" },
+      { id: 4, icon: <BsBasket />, title: "Enrolment", path: "/enrolment" },
+    ];
+   }
+   else {
+    navMenu = [
+      { id: 1, icon: <GoHome />, title: "Home", path: "/" },
+      { id: 2, icon: <IoMdBook />, title: "Courses", path: "/courses" },
+      { id: 3, icon: <MdOutlineQuiz />, title: "Quiz", path: "/quiz" },
+      { id: 4, icon: <BsBasket />, title: "Enrolment", path: "/enrolment" },
+      {
+        id: 5,
+        icon: <MdOutlineAssignment />,
+        title: "Assignment",
+        path: "/assignment",
+      },
+    ];
+   }
 
   return (
     <aside className="bg-white h-screen w-64 shadow-md flex flex-col">
       <div className="flex items-center justify-center gap-2 px-6 py-4 mt-3">
-        <RiShutDownLine className="text-4xl text-blue-600 cursor-pointer" />
+        <RiShutDownLine
+          className="text-4xl text-blue-600 cursor-pointer"
+        />
         <span className="font-bold text-2xl">SkillUp</span>
       </div>
       <ul className="flex-1 mt-6 space-y-2 px-4">
