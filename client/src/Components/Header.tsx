@@ -28,6 +28,7 @@ export default function Header() {
   if(userToken){
     parseToken = JSON.parse(userToken) as userInterface
   }
+  
 
   return (
     <header className="w-full px-8 py-2 flex items-center justify-between">

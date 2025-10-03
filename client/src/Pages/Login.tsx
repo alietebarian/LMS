@@ -76,7 +76,6 @@ export default function Login() {
         });
       },
     });
-    console.log(localStorage.getItem('user'));
     
   return (
     <div className="max-w-md mx-auto mt-16 p-6 bg-white shadow-md rounded-lg">

@@ -38,9 +38,6 @@ public class CourseController : ControllerBase
             })
             .ToListAsync();
 
-        if (!courses.Any())
-            return NotFound("there is no course");
-
         return Ok(courses);
     }
 
