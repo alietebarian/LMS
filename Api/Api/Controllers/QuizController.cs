@@ -58,7 +58,7 @@ public class QuizController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    //[Authorize(Roles ="Admin,Instructor")]
+    [Authorize(Roles ="Admin,Instructor")]
     public async Task<IActionResult> EditQuiz(int id, [FromBody]  QuizDto model)
     {
         var quiz = await _context.QuizQuestions
@@ -79,7 +79,7 @@ public class QuizController : ControllerBase
     }
 
     [HttpPost("{courseId}")]
-    //[Authorize(Roles ="Admin,Instructor")]
+    [Authorize(Roles ="Admin,Instructor")]
     public async Task<IActionResult> CreateQuiz(int courseId,[FromBody] CreateQuizDto dto)
     {
         var quiz = new Quiz
