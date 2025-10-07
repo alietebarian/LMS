@@ -22,7 +22,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(builder);
 
-        // ✅ Enrollment: User ↔ Enrollment ↔ Course
+        // Enrollment: User ↔ Enrollment ↔ Course
         builder.Entity<Enrollment>()
             .HasOne(e => e.User)
             .WithMany(u => u.Enrollments)
@@ -35,75 +35,74 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(e => e.CourseId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ✅ Course ↔ Instructor
+        // Course ↔ Instructor
         builder.Entity<Course>()
             .HasOne(c => c.Instructor)
             .WithMany(u => u.CoursesTaught)
             .HasForeignKey(c => c.InstrutorId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ✅ Assignment ↔ Course
+        // Assignment ↔ Course
         builder.Entity<Assignment>()
             .HasOne(a => a.Course)
             .WithMany(c => c.Assignments)
             .HasForeignKey(a => a.CourseId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ✅ AssignmentSubmission ↔ Assignment
+        // AssignmentSubmission ↔ Assignment
         builder.Entity<AssignmentSubmission>()
             .HasOne(s => s.Assignment)
             .WithMany(a => a.Submissions)
             .HasForeignKey(s => s.AssignmentId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ✅ AssignmentSubmission ↔ Student(User)
+        // AssignmentSubmission ↔ Student(User)
         builder.Entity<AssignmentSubmission>()
             .HasOne(s => s.Student)
             .WithMany(u => u.AssignmentSubmissions)
             .HasForeignKey(s => s.StudentId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ✅ Quiz ↔ Course
+        // Quiz ↔ Course
         builder.Entity<Quiz>()
             .HasOne(q => q.Course)
             .WithMany(c => c.Quizzes)
             .HasForeignKey(q => q.CourseId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ✅ QuizQuestion ↔ Quiz
-        builder.Entity<QuizQuestion>()
-            .HasOne(q => q.Quiz)
-            .WithMany(z => z.Questions)
-            .HasForeignKey(q => q.QuizId)
-            .OnDelete(DeleteBehavior.Restrict);
+        // Quiz ↔ QuizQuestion
+        builder.Entity<Quiz>()
+            .HasMany(q => q.Questions)
+            .WithOne(qs => qs.Quiz)
+            .HasForeignKey(qs => qs.QuizId)
+            .OnDelete(DeleteBehavior.Cascade); // حذف Quiz -> حذف همه Questions
 
-        // ✅ QuizSubmission ↔ Quiz
+        // QuizSubmission ↔ Quiz
         builder.Entity<QuizSubmission>()
             .HasOne(s => s.Quiz)
             .WithMany(q => q.Submissions)
             .HasForeignKey(s => s.QuizId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade); // حذف Quiz -> حذف همه Submissions
 
-        // ✅ QuizSubmission ↔ Student(User)
+        // QuizSubmission ↔ Student(User)
         builder.Entity<QuizSubmission>()
-            .HasOne(s => s.Student)
+            .HasOne(s => s.User)
             .WithMany(u => u.QuizSubmissions)
-            .HasForeignKey(s => s.StudentId)
+            .HasForeignKey(s => s.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ✅ Payment ↔ User
+        // Payment ↔ User
         builder.Entity<Payment>()
             .HasOne(p => p.User)
             .WithMany(u => u.Payments)
             .HasForeignKey(p => p.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ✅ Payment ↔ Course
+        // Payment ↔ Course
         builder.Entity<Payment>()
             .HasOne(p => p.Course)
             .WithMany(c => c.Payments)
             .HasForeignKey(p => p.CourseId)
             .OnDelete(DeleteBehavior.Restrict);
     }
-
 }
